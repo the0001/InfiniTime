@@ -36,3 +36,6 @@ Testing/Temporary/
 
 # Windows
 **/thumbs.db
+
+# Docker looks at source directory
+sources
