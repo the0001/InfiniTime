@@ -62,7 +62,7 @@ As of now, here is the list of achievements of this project:
     * Firmware validation
     * System information
  - Supported by 3 companion apps (development is in progress):
-    * [Gadgetbridge](https://codeberg.org/Freeyourgadget/Gadgetbridge/) (on Android)
+    * [Gadgetbridge](https://codeberg.org/Freeyourgadget/Gadgetbridge/) (on Android via F-Droid)
     * [Amazfish](https://openrepos.net/content/piggz/amazfish) (on SailfishOS and Linux)
     * [Siglo](https://github.com/alexr4535/siglo) (on Linux)
     * **[Experimental]** [WebBLEWatch](https://hubmartin.github.io/WebBLEWatch/) Synchronize time directly from your web browser. [video](https://youtu.be/IakiuhVDdrY)
@@ -72,10 +72,11 @@ As of now, here is the list of achievements of this project:
 ## Documentation
 
 ### Getting started
- - [Flash, upgrade (OTA), time synchronization,...](doc/gettingStarted/gettingStarted.md)
+ - [Getting started with InfiniTime 1.0 (quick user guide, update bootloader and InfiniTime,...)](doc/gettingStarted/gettingStarted-1.0.md)
+ - [Flash, upgrade (OTA), time synchronization,...](doc/gettingStarted/ota-gadgetbridge-nrfconnect.md)
 
 ### Develop
- - [Generate the fonts and symbols](src/displayapp/fonts/Readme.md)
+ - [Generate the fonts and symbols](src/displayapp/fonts/README.md)
  - [Creating a stopwatch in Pinetime(article)](https://pankajraghav.com/2021/04/03/PINETIME-STOPCLOCK.html)
 
 ### Build, flash and debug

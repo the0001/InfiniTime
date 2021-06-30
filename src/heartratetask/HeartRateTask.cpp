@@ -5,21 +5,20 @@
 
 using namespace Pinetime::Applications;
 
-HeartRateTask::HeartRateTask(Drivers::Hrs3300 &heartRateSensor, Controllers::HeartRateController& controller) :
-      heartRateSensor{heartRateSensor},
-      controller{controller},
-      ppg{static_cast<float>(heartRateSensor.ReadHrs())} {
-  messageQueue = xQueueCreate(10, 1);
-  controller.SetHeartRateTask(this);
+HeartRateTask::HeartRateTask(Drivers::Hrs3300& heartRateSensor, Controllers::HeartRateController& controller)
+  : heartRateSensor {heartRateSensor}, controller {controller}, ppg{} {
 }
 
 void HeartRateTask::Start() {
+  messageQueue = xQueueCreate(10, 1);
+  controller.SetHeartRateTask(this);
+
   if (pdPASS != xTaskCreate(HeartRateTask::Process, "Heartrate", 500, this, 0, &taskHandle))
     APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
 }
 
-void HeartRateTask::Process(void *instance) {
-  auto *app = static_cast<HeartRateTask *>(instance);
+void HeartRateTask::Process(void* instance) {
+  auto* app = static_cast<HeartRateTask*>(instance);
   app->Work();
 }
 
@@ -29,8 +28,10 @@ void HeartRateTask::Work() {
     Messages msg;
     uint32_t delay;
     if (state == States::Running) {
-      if (measurementStarted) delay = 40;
-      else delay = 100;
+      if (measurementStarted)
+        delay = 40;
+      else
+        delay = 100;
     } else
       delay = portMAX_DELAY;
 
@@ -42,19 +43,21 @@ void HeartRateTask::Work() {
           break;
         case Messages::WakeUp:
           state = States::Running;
-          if(measurementStarted) {
+          if (measurementStarted) {
             lastBpm = 0;
             StartMeasurement();
           }
           break;
         case Messages::StartMeasurement:
-          if(measurementStarted) break;
+          if (measurementStarted)
+            break;
           lastBpm = 0;
           StartMeasurement();
           measurementStarted = true;
           break;
         case Messages::StopMeasurement:
-          if(!measurementStarted) break;
+          if (!measurementStarted)
+            break;
           StopMeasurement();
           measurementStarted = false;
           break;
@@ -66,8 +69,9 @@ void HeartRateTask::Work() {
       ppg.Preprocess(hrs);
       auto bpm = ppg.HeartRate();
 
-      if (lastBpm == 0 && bpm == 0) controller.Update(Controllers::HeartRateController::States::NotEnoughData, 0);
-      if(bpm != 0) {
+      if (lastBpm == 0 && bpm == 0)
+        controller.Update(Controllers::HeartRateController::States::NotEnoughData, 0);
+      if (bpm != 0) {
         lastBpm = bpm;
         controller.Update(Controllers::HeartRateController::States::Running, lastBpm);
       }

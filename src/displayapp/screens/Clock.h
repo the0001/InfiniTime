@@ -4,8 +4,8 @@
 #include <chrono>
 #include <cstdint>
 #include <memory>
+#include <components/heartrate/HeartRateController.h>
 #include "Screen.h"
-#include "ScreenList.h"
 #include "components/datetime/DateTimeController.h"
 
 namespace Pinetime {
@@ -23,42 +23,38 @@ namespace Pinetime {
   namespace Applications {
     namespace Screens {
       class Clock : public Screen {
-        public:
-          Clock(DisplayApp* app,
-                  Controllers::DateTime& dateTimeController,
-                  Controllers::Battery& batteryController,
-                  Controllers::Ble& bleController,
-                  Controllers::NotificationManager& notificatioManager,
-                  Controllers::Settings &settingsController,
-                  Controllers::HeartRateController& heartRateController,
-                  Controllers::MotionController& motionController);
-          ~Clock() override;
+      public:
+        Clock(DisplayApp* app,
+              Controllers::DateTime& dateTimeController,
+              Controllers::Battery& batteryController,
+              Controllers::Ble& bleController,
+              Controllers::NotificationManager& notificatioManager,
+              Controllers::Settings& settingsController,
+              Controllers::HeartRateController& heartRateController,
+              Controllers::MotionController& motionController);
+        ~Clock() override;
 
-          bool Refresh() override;
-          
-          bool OnTouchEvent(TouchEvents event) override;
+        bool Refresh() override;
 
-        private:
+        bool OnTouchEvent(TouchEvents event) override;
 
-          Controllers::DateTime& dateTimeController;
-          Controllers::Battery& batteryController;
-          Controllers::Ble& bleController;
-          Controllers::NotificationManager& notificatioManager;
-          Controllers::Settings& settingsController;
-          Controllers::HeartRateController& heartRateController;
-          Controllers::MotionController& motionController;
+      private:
+        Controllers::DateTime& dateTimeController;
+        Controllers::Battery& batteryController;
+        Controllers::Ble& bleController;
+        Controllers::NotificationManager& notificatioManager;
+        Controllers::Settings& settingsController;
+        Controllers::HeartRateController& heartRateController;
+        Controllers::MotionController& motionController;
 
+        std::unique_ptr<Screen> screen;
+        std::unique_ptr<Screen> WatchFaceDigitalScreen();
+        std::unique_ptr<Screen> WatchFaceAnalogScreen();
+        std::unique_ptr<Screen> PineTimeStyleScreen();
 
-          ScreenList<2> screens;
-          std::unique_ptr<Screen> WatchFaceDigitalScreen();
-          std::unique_ptr<Screen> WatchFaceAnalogScreen();
-
-          // Examples for more watch faces
-          //std::unique_ptr<Screen> WatchFaceMinimalScreen();
-          //std::unique_ptr<Screen> WatchFaceCustomScreen();
-
-          
-
+        // Examples for more watch faces
+        // std::unique_ptr<Screen> WatchFaceMinimalScreen();
+        // std::unique_ptr<Screen> WatchFaceCustomScreen();
       };
     }
   }
